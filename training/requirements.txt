@@ -1,0 +1,20 @@
+# LoRA 微调依赖
+
+# Unsloth - 高效微调框架
+unsloth[colab-new] @ git+https://github.com/unslothai/unsloth.git
+
+# 或者使用 pip 安装（Mac M系列）
+# pip install "unsloth[colab-new] @ git+https://github.com/unslothai/unsloth.git"
+
+# 基础依赖
+torch>=2.8.0
+transformers>=4.53.0
+datasets>=2.16.0
+peft>=0.7.0
+trl>=0.7.0
+bitsandbytes>=0.41.0
+accelerate>=0.25.0
+
+# 其他
+aiohttp
+tqdm>=4.66.3

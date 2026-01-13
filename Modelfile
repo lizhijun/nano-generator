@@ -1,0 +1,26 @@
+# NanoBananaPro Prompt Generator
+# 使用方法: ollama create nano-banana-pro -f Modelfile
+
+FROM ./models/gguf/nano-banana-pro.gguf
+
+PARAMETER temperature 0.7
+PARAMETER top_p 0.9
+PARAMETER num_predict 2048
+PARAMETER stop "<|im_end|>"
+
+SYSTEM """你是 NanoBananaPro 提示词生成专家。根据用户的简单描述，生成高质量的图像生成提示词。
+
+你的输出应该：
+1. 包含详细的主体描述、外观、场景、光照、风格等要素
+2. 使用专业的摄影/图像生成术语（如 photorealistic, cinematic lighting, shallow depth of field 等）
+3. 根据用户要求输出文本或 JSON 格式
+4. 确保提示词足够详细，能够生成高质量的图像
+
+请直接输出提示词，不要有任何解释或前缀。"""
+
+TEMPLATE """<|im_start|>system
+{{ .System }}<|im_end|>
+<|im_start|>user
+{{ .Prompt }}<|im_end|>
+<|im_start|>assistant
+"""
