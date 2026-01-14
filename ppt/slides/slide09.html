@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+
+html { background: #181B24; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  font-family: Arial, sans-serif;
+  display: flex;
+  background-size: cover;
+  background-position: center;
+  box-sizing: border-box;
+}
+h1 { color: #FFFFFF; margin: 0; }
+h2 { color: #B165FB; margin: 0; }
+h3 { color: #FFFFFF; margin: 0; }
+p { color: #E0E0E0; margin: 0; line-height: 1.5; }
+ul, ol { color: #E0E0E0; margin: 0; padding-left: 18pt; }
+li { margin-bottom: 6pt; line-height: 1.4; }
+.highlight { color: #B165FB; }
+.accent { color: #40695B; }
+
+</style>
+</head>
+<body style="background-image: url('../images/bg-main.png');">
+
+      <div style="flex: 1; padding: 30pt;">
+        <h2 style="font-size: 24pt; margin-bottom: 18pt;">LoRA 数学原理</h2>
+        <div style="display: flex; gap: 20pt;">
+          <div style="flex: 1;">
+            <div style="background: #0d0f14; padding: 15pt; border-radius: 4pt; margin-bottom: 15pt;">
+              <p style="font-family: 'Courier New', monospace; font-size: 13pt; color: #B165FB;">h = Wx + BAx</p>
+              <p style="font-family: 'Courier New', monospace; font-size: 13pt; color: #B165FB; margin-top: 8pt;">h = Wx + (α/r)BAx</p>
+            </div>
+            <h3 style="font-size: 14pt; color: #B165FB; margin-bottom: 10pt;">初始化策略</h3>
+            <ul style="font-size: 12pt;">
+              <li>A: 高斯随机初始化</li>
+              <li>B: 零初始化</li>
+              <li>确保初始 ΔW = BA = 0</li>
+            </ul>
+          </div>
+          <div style="flex: 1;">
+            <h3 style="font-size: 14pt; color: #40695B; margin-bottom: 10pt;">为什么有效?</h3>
+            <ul style="font-size: 12pt;">
+              <li>预训练模型已有强表征</li>
+              <li>任务适配只需<span class="highlight">小调整</span></li>
+              <li>权重更新具有低秩特性</li>
+              <li>Aghajanyan 2020 实验验证</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    
+</body>
+</html>

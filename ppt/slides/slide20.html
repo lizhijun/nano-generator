@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+
+html { background: #181B24; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  font-family: Arial, sans-serif;
+  display: flex;
+  background-size: cover;
+  background-position: center;
+  box-sizing: border-box;
+}
+h1 { color: #FFFFFF; margin: 0; }
+h2 { color: #B165FB; margin: 0; }
+h3 { color: #FFFFFF; margin: 0; }
+p { color: #E0E0E0; margin: 0; line-height: 1.5; }
+ul, ol { color: #E0E0E0; margin: 0; padding-left: 18pt; }
+li { margin-bottom: 6pt; line-height: 1.4; }
+.highlight { color: #B165FB; }
+.accent { color: #40695B; }
+
+</style>
+</head>
+<body style="background-image: url('../images/bg-main.png');">
+
+      <div style="flex: 1; padding: 30pt;">
+        <h2 style="font-size: 24pt; margin-bottom: 18pt;">RAG 架构</h2>
+        <div style="display: flex; gap: 20pt;">
+          <div style="flex: 1;">
+            <h3 style="font-size: 15pt; color: #B165FB; margin-bottom: 12pt;">工作流程</h3>
+            <ol style="font-size: 12pt;">
+              <li>用户查询向量化</li>
+              <li>向量库相似检索</li>
+              <li>Top-K 文档召回</li>
+              <li>拼接 context + query</li>
+              <li>LLM 生成回答</li>
+            </ol>
+          </div>
+          <div style="flex: 1;">
+            <h3 style="font-size: 15pt; color: #40695B; margin-bottom: 12pt;">优势</h3>
+            <ul style="font-size: 12pt;">
+              <li>无需训练模型</li>
+              <li>知识实时更新</li>
+              <li>可溯源、可解释</li>
+              <li>降低幻觉风险</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+
+html { background: #181B24; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  font-family: Arial, sans-serif;
+  display: flex;
+  background-size: cover;
+  background-position: center;
+  box-sizing: border-box;
+}
+h1 { color: #FFFFFF; margin: 0; }
+h2 { color: #B165FB; margin: 0; }
+h3 { color: #FFFFFF; margin: 0; }
+p { color: #E0E0E0; margin: 0; line-height: 1.5; }
+ul, ol { color: #E0E0E0; margin: 0; padding-left: 18pt; }
+li { margin-bottom: 6pt; line-height: 1.4; }
+.highlight { color: #B165FB; }
+.accent { color: #40695B; }
+
+</style>
+</head>
+<body style="background-image: url('../images/bg-main.png');">
+
+      <div style="flex: 1; padding: 30pt;">
+        <h2 style="font-size: 24pt; margin-bottom: 18pt;">全量微调显存分析</h2>
+        <div style="display: flex; gap: 20pt;">
+          <div style="flex: 1;">
+            <h3 style="font-size: 15pt; color: #B165FB; margin-bottom: 12pt;">显存占用构成</h3>
+            <ul style="font-size: 13pt;">
+              <li><span class="highlight">模型参数</span>: 7B × 2B = 14GB</li>
+              <li><span class="highlight">梯度</span>: 14GB (同规模)</li>
+              <li><span class="highlight">优化器状态</span>: 28GB (Adam)</li>
+              <li><span class="accent">激活值</span>: 约 8-16GB</li>
+            </ul>
+          </div>
+          <div style="flex: 1;">
+            <div style="background: #0d0f14; padding: 15pt; border-radius: 4pt;">
+              <p style="font-size: 14pt; text-align: center; margin-bottom: 10pt;">7B 模型全量微调</p>
+              <p style="font-size: 28pt; color: #B165FB; text-align: center; font-weight: bold;">~64GB</p>
+              <p style="font-size: 12pt; color: #888; text-align: center; margin-top: 8pt;">需要 A100 80GB 或多卡</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+</body>
+</html>

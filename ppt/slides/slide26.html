@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+
+html { background: #181B24; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  font-family: Arial, sans-serif;
+  display: flex;
+  background-size: cover;
+  background-position: center;
+  box-sizing: border-box;
+}
+h1 { color: #FFFFFF; margin: 0; }
+h2 { color: #B165FB; margin: 0; }
+h3 { color: #FFFFFF; margin: 0; }
+p { color: #E0E0E0; margin: 0; line-height: 1.5; }
+ul, ol { color: #E0E0E0; margin: 0; padding-left: 18pt; }
+li { margin-bottom: 6pt; line-height: 1.4; }
+.highlight { color: #B165FB; }
+.accent { color: #40695B; }
+
+</style>
+</head>
+<body style="background-image: url('../images/bg-main.png');">
+
+      <div style="flex: 1; padding: 30pt;">
+        <h2 style="font-size: 24pt; margin-bottom: 18pt;">实践案例: NanoBananaPro</h2>
+        <div style="display: flex; gap: 20pt;">
+          <div style="flex: 1;">
+            <h3 style="font-size: 15pt; color: #B165FB; margin-bottom: 12pt;">项目背景</h3>
+            <ul style="font-size: 12pt;">
+              <li>LoRA 微调 Qwen2.5-3B</li>
+              <li>图像生成提示词任务</li>
+              <li>6000+ 训练样本</li>
+              <li>单 GPU 训练</li>
+            </ul>
+          </div>
+          <div style="flex: 1;">
+            <h3 style="font-size: 15pt; color: #40695B; margin-bottom: 12pt;">技术选型</h3>
+            <ul style="font-size: 12pt;">
+              <li>unsloth 加速框架</li>
+              <li>LoRA r=16, alpha=16</li>
+              <li>4-bit 量化推理</li>
+              <li>Gradio 前端部署</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+
+html { background: #181B24; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  font-family: Arial, sans-serif;
+  display: flex;
+  background-size: cover;
+  background-position: center;
+  box-sizing: border-box;
+}
+h1 { color: #FFFFFF; margin: 0; }
+h2 { color: #B165FB; margin: 0; }
+h3 { color: #FFFFFF; margin: 0; }
+p { color: #E0E0E0; margin: 0; line-height: 1.5; }
+ul, ol { color: #E0E0E0; margin: 0; padding-left: 18pt; }
+li { margin-bottom: 6pt; line-height: 1.4; }
+.highlight { color: #B165FB; }
+.accent { color: #40695B; }
+
+</style>
+</head>
+<body style="background-image: url('../images/bg-main.png');">
+
+      <div style="flex: 1; padding: 30pt;">
+        <h2 style="font-size: 24pt; margin-bottom: 18pt;">指令微调 Instruction Tuning</h2>
+        <div style="display: flex; gap: 20pt;">
+          <div style="flex: 1;">
+            <h3 style="font-size: 15pt; color: #B165FB; margin-bottom: 12pt;">核心思想</h3>
+            <p style="font-size: 13pt; margin-bottom: 15pt;">用 (指令, 输出) 对训练，让模型理解<span class="highlight">任务意图</span></p>
+            <div style="background: #0d0f14; padding: 12pt; border-radius: 4pt;">
+              <p style="font-size: 12pt; color: #B165FB;">指令: 将以下英文翻译成中文</p>
+              <p style="font-size: 12pt; color: #888; margin-top: 6pt;">输入: Hello World</p>
+              <p style="font-size: 12pt; color: #40695B; margin-top: 6pt;">输出: 你好世界</p>
+            </div>
+          </div>
+          <div style="flex: 1;">
+            <h3 style="font-size: 15pt; color: #40695B; margin-bottom: 12pt;">优势</h3>
+            <ul style="font-size: 12pt;">
+              <li>零样本泛化能力强</li>
+              <li>多任务统一格式</li>
+              <li>数据构造相对简单</li>
+              <li>与 LoRA 完美结合</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    
+</body>
+</html>

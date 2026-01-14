@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+
+html { background: #181B24; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  font-family: Arial, sans-serif;
+  display: flex;
+  background-size: cover;
+  background-position: center;
+  box-sizing: border-box;
+}
+h1 { color: #FFFFFF; margin: 0; }
+h2 { color: #B165FB; margin: 0; }
+h3 { color: #FFFFFF; margin: 0; }
+p { color: #E0E0E0; margin: 0; line-height: 1.5; }
+ul, ol { color: #E0E0E0; margin: 0; padding-left: 18pt; }
+li { margin-bottom: 6pt; line-height: 1.4; }
+.highlight { color: #B165FB; }
+.accent { color: #40695B; }
+
+</style>
+</head>
+<body style="background-image: url('../images/bg-main.png');">
+
+      <div style="flex: 1; padding: 30pt;">
+        <h2 style="font-size: 24pt; margin-bottom: 18pt;">LoRA 关键超参数</h2>
+        <div style="display: flex; gap: 15pt;">
+          <div style="flex: 1; background: #1e2235; padding: 15pt; border-radius: 6pt;">
+            <h3 style="font-size: 14pt; color: #B165FB; margin-bottom: 8pt;">rank (r)</h3>
+            <p style="font-size: 12pt; margin-bottom: 6pt;">低秩维度，控制表达能力</p>
+            <p style="font-size: 11pt; color: #888;">推荐: 8 / 16 / 32 / 64</p>
+          </div>
+          <div style="flex: 1; background: #1e2235; padding: 15pt; border-radius: 6pt;">
+            <h3 style="font-size: 14pt; color: #B165FB; margin-bottom: 8pt;">alpha (α)</h3>
+            <p style="font-size: 12pt; margin-bottom: 6pt;">缩放因子</p>
+            <p style="font-size: 11pt; color: #888;">推荐: 通常设为 2×r</p>
+          </div>
+          <div style="flex: 1; background: #1e2235; padding: 15pt; border-radius: 6pt;">
+            <h3 style="font-size: 14pt; color: #40695B; margin-bottom: 8pt;">dropout</h3>
+            <p style="font-size: 12pt; margin-bottom: 6pt;">正则化</p>
+            <p style="font-size: 11pt; color: #888;">推荐: 0.05 ~ 0.1</p>
+          </div>
+          <div style="flex: 1; background: #1e2235; padding: 15pt; border-radius: 6pt;">
+            <h3 style="font-size: 14pt; color: #40695B; margin-bottom: 8pt;">target_modules</h3>
+            <p style="font-size: 12pt; margin-bottom: 6pt;">目标层</p>
+            <p style="font-size: 11pt; color: #888;">q/k/v/o_proj</p>
+          </div>
+        </div>
+      </div>
+    
+</body>
+</html>

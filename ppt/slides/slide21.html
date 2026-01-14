@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+
+html { background: #181B24; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  font-family: Arial, sans-serif;
+  display: flex;
+  background-size: cover;
+  background-position: center;
+  box-sizing: border-box;
+}
+h1 { color: #FFFFFF; margin: 0; }
+h2 { color: #B165FB; margin: 0; }
+h3 { color: #FFFFFF; margin: 0; }
+p { color: #E0E0E0; margin: 0; line-height: 1.5; }
+ul, ol { color: #E0E0E0; margin: 0; padding-left: 18pt; }
+li { margin-bottom: 6pt; line-height: 1.4; }
+.highlight { color: #B165FB; }
+.accent { color: #40695B; }
+
+</style>
+</head>
+<body style="background-image: url('../images/bg-main.png');">
+
+      <div style="flex: 1; padding: 30pt;">
+        <h2 style="font-size: 24pt; margin-bottom: 18pt;">RAG vs 微调</h2>
+        <div style="display: flex; gap: 20pt;">
+          <div style="flex: 1; background: #2d1f4a; padding: 15pt; border-radius: 6pt;">
+            <h3 style="font-size: 15pt; color: #B165FB; margin-bottom: 10pt;">RAG 适合</h3>
+            <ul style="font-size: 11pt;">
+              <li>知识频繁更新</li>
+              <li>需要可溯源</li>
+              <li>事实性问答</li>
+              <li>快速上线</li>
+            </ul>
+          </div>
+          <div style="flex: 1; background: #1f3d3d; padding: 15pt; border-radius: 6pt;">
+            <h3 style="font-size: 15pt; color: #40695B; margin-bottom: 10pt;">微调适合</h3>
+            <ul style="font-size: 11pt;">
+              <li>风格/语气定制</li>
+              <li>特殊输出格式</li>
+              <li>推理能力增强</li>
+              <li>专业领域深度</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    
+</body>
+</html>

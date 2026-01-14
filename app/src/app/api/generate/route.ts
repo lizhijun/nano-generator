@@ -1,8 +1,8 @@
 import { NextRequest } from "next/server"
 import { generateStream, SYSTEM_PROMPT, buildPrompt } from "@/lib/ollama"
 
-// 默认模型，可以切换为微调后的模型
-const DEFAULT_MODEL = process.env.OLLAMA_MODEL || "qwen2.5-coder:latest"
+// 使用微调后的 NanoBananaPro 提示词生成模型
+const DEFAULT_MODEL = process.env.OLLAMA_MODEL || "nano-prompt"
 
 export async function POST(request: NextRequest) {
   try {

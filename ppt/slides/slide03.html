@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+
+html { background: #181B24; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  font-family: Arial, sans-serif;
+  display: flex;
+  background-size: cover;
+  background-position: center;
+  box-sizing: border-box;
+}
+h1 { color: #FFFFFF; margin: 0; }
+h2 { color: #B165FB; margin: 0; }
+h3 { color: #FFFFFF; margin: 0; }
+p { color: #E0E0E0; margin: 0; line-height: 1.5; }
+ul, ol { color: #E0E0E0; margin: 0; padding-left: 18pt; }
+li { margin-bottom: 6pt; line-height: 1.4; }
+.highlight { color: #B165FB; }
+.accent { color: #40695B; }
+
+</style>
+</head>
+<body style="background-image: url('../images/bg-main.png');">
+
+      <div style="flex: 1; padding: 30pt;">
+        <h2 style="font-size: 26pt; margin-bottom: 20pt;">六种私有化训练方案概览</h2>
+        <div style="display: flex; gap: 12pt; flex-wrap: wrap;">
+          <div style="background: #2d1f4a; padding: 12pt 15pt; border-radius: 6pt; width: 195pt;">
+            <h3 style="font-size: 14pt; color: #B165FB; margin-bottom: 6pt;">1. 微调 Fine-tuning</h3>
+            <p style="font-size: 11pt;">全量微调 / LoRA / PEFT</p>
+          </div>
+          <div style="background: #1f3d3d; padding: 12pt 15pt; border-radius: 6pt; width: 195pt;">
+            <h3 style="font-size: 14pt; color: #40695B; margin-bottom: 6pt;">2. 指令微调 IFT</h3>
+            <p style="font-size: 11pt;">instruction → output</p>
+          </div>
+          <div style="background: #2d1f4a; padding: 12pt 15pt; border-radius: 6pt; width: 195pt;">
+            <h3 style="font-size: 14pt; color: #B165FB; margin-bottom: 6pt;">3. SFT + RLHF</h3>
+            <p style="font-size: 11pt;">监督微调 + 强化学习</p>
+          </div>
+          <div style="background: #1f3d3d; padding: 12pt 15pt; border-radius: 6pt; width: 195pt;">
+            <h3 style="font-size: 14pt; color: #40695B; margin-bottom: 6pt;">4. Prompt Tuning</h3>
+            <p style="font-size: 11pt;">只改输入 embedding</p>
+          </div>
+          <div style="background: #2d1f4a; padding: 12pt 15pt; border-radius: 6pt; width: 195pt;">
+            <h3 style="font-size: 14pt; color: #B165FB; margin-bottom: 6pt;">5. RAG 检索增强</h3>
+            <p style="font-size: 11pt;">外部知识库检索</p>
+          </div>
+          <div style="background: #1f3d3d; padding: 12pt 15pt; border-radius: 6pt; width: 195pt;">
+            <h3 style="font-size: 14pt; color: #40695B; margin-bottom: 6pt;">6. 混合方案</h3>
+            <p style="font-size: 11pt;">RAG + LoRA 组合</p>
+          </div>
+        </div>
+      </div>
+    
+</body>
+</html>

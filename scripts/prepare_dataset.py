@@ -39,9 +39,18 @@ INSTRUCTION_TEMPLATE_JSON = """根据以下描述生成 NanoBananaPro 图像提�
 描述：{description}"""
 
 
+def detect_prompt_type(prompt: str) -> str:
+    """检测提示词类型"""
+    prompt_stripped = prompt.strip()
+    if prompt_stripped.startswith('{') or prompt_stripped.startswith('['):
+        return 'json'
+    return 'text'
+
+
 def format_training_sample(item: dict) -> dict:
     """格式化单条训练数据"""
-    prompt_type = item.get('prompt_type', 'text')
+    prompt = item['prompt']
+    prompt_type = item.get('prompt_type') or detect_prompt_type(prompt)
     description = item['simple_description']
     
     if prompt_type == 'json':

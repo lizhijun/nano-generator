@@ -123,16 +123,9 @@ export async function* generateStream(
 
 /**
  * 生成 NanoBananaPro 提示词的系统提示
+ * 注：由于使用了微调后的模型（nano-prompt），系统提示可以更简洁
  */
-export const SYSTEM_PROMPT = `你是 NanoBananaPro 提示词生成专家。根据用户的简单描述，生成高质量的图像生成提示词。
-
-你的输出应该：
-1. 包含详细的主体描述、外观、场景、光照、风格等要素
-2. 使用专业的摄影/图像生成术语（如 photorealistic, cinematic lighting, shallow depth of field, 8k resolution 等）
-3. 根据用户要求输出文本或 JSON 格式
-4. 确保提示词足够详细，能够生成高质量的图像
-
-请直接输出提示词，不要有任何解释或前缀。`
+export const SYSTEM_PROMPT = `你是 NanoBananaPro 提示词生成专家。根据用户的简单描述，生成高质量的图像生成提示词。`
 
 /**
  * 构建生成提示词的 prompt

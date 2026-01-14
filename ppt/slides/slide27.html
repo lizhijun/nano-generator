@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+
+html { background: #181B24; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  font-family: Arial, sans-serif;
+  display: flex;
+  background-size: cover;
+  background-position: center;
+  box-sizing: border-box;
+}
+h1 { color: #FFFFFF; margin: 0; }
+h2 { color: #B165FB; margin: 0; }
+h3 { color: #FFFFFF; margin: 0; }
+p { color: #E0E0E0; margin: 0; line-height: 1.5; }
+ul, ol { color: #E0E0E0; margin: 0; padding-left: 18pt; }
+li { margin-bottom: 6pt; line-height: 1.4; }
+.highlight { color: #B165FB; }
+.accent { color: #40695B; }
+
+</style>
+</head>
+<body style="background-image: url('../images/bg-main.png');">
+
+      <div style="flex: 1; padding: 30pt;">
+        <h2 style="font-size: 24pt; margin-bottom: 18pt;">训练配置示例</h2>
+        <div style="background: #0d0f14; padding: 15pt; border-radius: 4pt; font-family: 'Courier New', monospace; font-size: 11pt;">
+          <p style="color: #B165FB;">model = FastLanguageModel.get_peft_model(</p>
+          <p style="color: #E0E0E0; margin-left: 15pt;">model,</p>
+          <p style="color: #E0E0E0; margin-left: 15pt;">r=<span style="color: #40695B;">16</span>,</p>
+          <p style="color: #E0E0E0; margin-left: 15pt;">lora_alpha=<span style="color: #40695B;">16</span>,</p>
+          <p style="color: #E0E0E0; margin-left: 15pt;">lora_dropout=<span style="color: #40695B;">0</span>,</p>
+          <p style="color: #E0E0E0; margin-left: 15pt;">target_modules=[<span style="color: #888;">"q_proj", "k_proj",</span></p>
+          <p style="color: #888; margin-left: 30pt;">"v_proj", "o_proj"</span>],</p>
+          <p style="color: #B165FB;">)</p>
+        </div>
+      </div>
+    
+</body>
+</html>

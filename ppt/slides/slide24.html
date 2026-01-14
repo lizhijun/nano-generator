@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+
+html { background: #181B24; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  font-family: Arial, sans-serif;
+  display: flex;
+  background-size: cover;
+  background-position: center;
+  box-sizing: border-box;
+}
+h1 { color: #FFFFFF; margin: 0; }
+h2 { color: #B165FB; margin: 0; }
+h3 { color: #FFFFFF; margin: 0; }
+p { color: #E0E0E0; margin: 0; line-height: 1.5; }
+ul, ol { color: #E0E0E0; margin: 0; padding-left: 18pt; }
+li { margin-bottom: 6pt; line-height: 1.4; }
+.highlight { color: #B165FB; }
+.accent { color: #40695B; }
+
+</style>
+</head>
+<body style="background-image: url('../images/bg-main.png');">
+
+      <div style="flex: 1; padding: 30pt;">
+        <h2 style="font-size: 22pt; margin-bottom: 15pt;">方案对比表</h2>
+        <div style="background: #1e2235; padding: 12pt; border-radius: 6pt; font-size: 11pt;">
+          <div style="display: flex; border-bottom: 1px solid #333; padding-bottom: 8pt; margin-bottom: 8pt;">
+            <p style="flex: 1.2; color: #B165FB; font-weight: bold;">方案</p>
+            <p style="flex: 1; color: #B165FB; font-weight: bold;">参数量</p>
+            <p style="flex: 1; color: #B165FB; font-weight: bold;">显存</p>
+            <p style="flex: 1; color: #B165FB; font-weight: bold;">效果</p>
+          </div>
+          <div style="display: flex; margin-bottom: 6pt;">
+            <p style="flex: 1.2;">全量微调</p>
+            <p style="flex: 1;">100%</p>
+            <p style="flex: 1;">极高</p>
+            <p style="flex: 1; color: #40695B;">最好</p>
+          </div>
+          <div style="display: flex; margin-bottom: 6pt;">
+            <p style="flex: 1.2;">LoRA</p>
+            <p style="flex: 1;">0.1-1%</p>
+            <p style="flex: 1;">低</p>
+            <p style="flex: 1; color: #40695B;">接近全量</p>
+          </div>
+          <div style="display: flex; margin-bottom: 6pt;">
+            <p style="flex: 1.2;">QLoRA</p>
+            <p style="flex: 1;">0.1-1%</p>
+            <p style="flex: 1;">更低</p>
+            <p style="flex: 1; color: #888;">略低</p>
+          </div>
+          <div style="display: flex; margin-bottom: 6pt;">
+            <p style="flex: 1.2;">Prompt Tuning</p>
+            <p style="flex: 1;">~0.01%</p>
+            <p style="flex: 1;">最低</p>
+            <p style="flex: 1; color: #888;">一般</p>
+          </div>
+          <div style="display: flex;">
+            <p style="flex: 1.2;">RAG</p>
+            <p style="flex: 1;">0%</p>
+            <p style="flex: 1;">推理时</p>
+            <p style="flex: 1; color: #40695B;">依场景</p>
+          </div>
+        </div>
+      </div>
+    
+</body>
+</html>

@@ -1,173 +1,252 @@
 #!/usr/bin/env python3
 """
-评估模型效果
+评估微调效果
 
-测试生成的提示词质量
+使用验证集评估模型，计算相似度分数
 """
 
 import json
-import aiohttp
-import asyncio
+import torch
 from pathlib import Path
+from tqdm import tqdm
+import re
 
-# 配置
 BASE_DIR = Path(__file__).parent.parent
-OLLAMA_URL = "http://localhost:11434/api/generate"
-MODEL_NAME = "nano-banana-pro"  # 微调后的模型
-
-# 测试用例
-TEST_CASES = [
-    {
-        "input": "街拍时尚女孩，霓虹灯背景",
-        "expected_elements": ["woman", "street", "neon", "fashion"]
-    },
-    {
-        "input": "咖啡馆里看书的文艺青年",
-        "expected_elements": ["café", "book", "reading", "indoor"]
-    },
-    {
-        "input": "赛博朋克风格的城市夜景",
-        "expected_elements": ["cyberpunk", "city", "night", "neon"]
-    },
-    {
-        "input": "海边日落，金色阳光下的冲浪者",
-        "expected_elements": ["beach", "sunset", "golden", "surfer"]
-    },
-    {
-        "input": "时尚男士街拍，都市背景，电影感光影",
-        "expected_elements": ["man", "street", "urban", "cinematic"]
-    },
-]
 
 
-async def generate_prompt(session, input_text: str) -> str:
-    """调用模型生成提示词"""
-    try:
-        async with session.post(
-            OLLAMA_URL,
-            json={
-                "model": MODEL_NAME,
-                "prompt": f"根据以下描述生成 NanoBananaPro 图像提示词：\n\n{input_text}",
-                "stream": False,
-                "options": {
-                    "temperature": 0.7,
-                    "num_predict": 1024
-                }
-            },
-            timeout=aiohttp.ClientTimeout(total=60)
-        ) as resp:
-            if resp.status == 200:
-                result = await resp.json()
-                return result.get("response", "")
-    except Exception as e:
-        return f"Error: {e}"
-    return ""
+def load_validation_data():
+    """加载验证集"""
+    val_path = BASE_DIR / "data/processed/validation_data.json"
+    with open(val_path, 'r', encoding='utf-8') as f:
+        return json.load(f)
 
 
-def evaluate_output(output: str, expected_elements: list[str]) -> dict:
-    """评估输出质量"""
-    output_lower = output.lower()
+def load_model(use_finetuned=True):
+    """加载模型"""
+    from transformers import AutoModelForCausalLM, AutoTokenizer
+    from peft import PeftModel
     
-    # 检查期望元素
-    found_elements = [elem for elem in expected_elements if elem in output_lower]
-    element_score = len(found_elements) / len(expected_elements)
+    base_model_name = "Qwen/Qwen2.5-3B-Instruct"
     
-    # 检查长度（好的提示词通常 200-2000 字符）
-    length = len(output)
-    length_score = 1.0 if 200 <= length <= 2000 else 0.5 if 100 <= length <= 3000 else 0.2
+    if use_finetuned:
+        lora_path = BASE_DIR / "models/lora_adapter"
+        merged_path = BASE_DIR / "models/merged"
+        
+        if merged_path.exists() and (merged_path / "config.json").exists():
+            print("Loading merged model...")
+            model = AutoModelForCausalLM.from_pretrained(
+                str(merged_path),
+                torch_dtype=torch.float16,
+                device_map="auto",
+                trust_remote_code=True,
+            )
+            tokenizer = AutoTokenizer.from_pretrained(str(merged_path), trust_remote_code=True)
+        elif lora_path.exists():
+            print("Loading LoRA adapter...")
+            model = AutoModelForCausalLM.from_pretrained(
+                base_model_name,
+                torch_dtype=torch.float16,
+                device_map="auto",
+                trust_remote_code=True,
+            )
+            model = PeftModel.from_pretrained(model, str(lora_path))
+            tokenizer = AutoTokenizer.from_pretrained(base_model_name, trust_remote_code=True)
+        else:
+            raise FileNotFoundError("Finetuned model not found")
+    else:
+        print("Loading base model...")
+        model = AutoModelForCausalLM.from_pretrained(
+            base_model_name,
+            torch_dtype=torch.float16,
+            device_map="auto",
+            trust_remote_code=True,
+        )
+        tokenizer = AutoTokenizer.from_pretrained(base_model_name, trust_remote_code=True)
     
-    # 检查专业术语
-    pro_terms = [
-        "photorealistic", "cinematic", "lighting", "depth of field",
-        "8k", "realistic", "high detail", "bokeh", "portrait"
+    return model, tokenizer
+
+
+def generate(model, tokenizer, user_input: str) -> str:
+    """生成输出"""
+    system_prompt = "你是 NanoBananaPro 提示词生成专家。根据用户的简单描述，生成高质量的图像生成提示词。"
+    
+    messages = [
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": user_input}
     ]
-    found_terms = [term for term in pro_terms if term in output_lower]
-    term_score = min(len(found_terms) / 3, 1.0)  # 至少3个术语得满分
     
-    # 检查是否为 JSON 格式
-    is_json = output.strip().startswith('{') and output.strip().endswith('}')
+    text = tokenizer.apply_chat_template(
+        messages,
+        tokenize=False,
+        add_generation_prompt=True
+    )
     
-    return {
-        "element_score": element_score,
-        "found_elements": found_elements,
-        "length": length,
-        "length_score": length_score,
-        "term_score": term_score,
-        "found_terms": found_terms,
-        "is_json": is_json,
-        "total_score": (element_score + length_score + term_score) / 3
-    }
+    inputs = tokenizer(text, return_tensors="pt").to(model.device)
+    
+    with torch.no_grad():
+        outputs = model.generate(
+            **inputs,
+            max_new_tokens=512,
+            temperature=0.3,  # 低温度，更确定性
+            top_p=0.9,
+            do_sample=True,
+            pad_token_id=tokenizer.eos_token_id,
+        )
+    
+    response = tokenizer.decode(outputs[0][inputs['input_ids'].shape[1]:], skip_special_tokens=True)
+    return response.strip()
 
 
-async def main():
-    print("=" * 60)
-    print("NanoBananaPro Model Evaluation")
-    print("=" * 60)
+def calculate_keyword_overlap(generated: str, reference: str) -> float:
+    """计算关键词重叠率"""
+    # 提取英文单词和关键短语
+    def extract_keywords(text):
+        # 英文单词
+        words = set(re.findall(r'[a-zA-Z]{3,}', text.lower()))
+        # 数字参数 (如 --ar 16:9)
+        params = set(re.findall(r'--\w+\s+[\d:]+', text))
+        return words | params
     
-    # 检查模型是否存在
-    try:
-        async with aiohttp.ClientSession() as session:
-            async with session.get("http://localhost:11434/api/tags") as resp:
-                if resp.status == 200:
-                    data = await resp.json()
-                    models = [m["name"] for m in data.get("models", [])]
-                    if MODEL_NAME not in models and f"{MODEL_NAME}:latest" not in models:
-                        print(f"Warning: Model '{MODEL_NAME}' not found in Ollama")
-                        print(f"Available models: {models}")
-                        print("\nPlease create the model first:")
-                        print(f"  ollama create {MODEL_NAME} -f Modelfile")
-                        return
-    except Exception as e:
-        print(f"Error connecting to Ollama: {e}")
-        return
+    gen_keywords = extract_keywords(generated)
+    ref_keywords = extract_keywords(reference)
     
-    print(f"\nTesting model: {MODEL_NAME}")
-    print(f"Test cases: {len(TEST_CASES)}")
-    print("-" * 60)
+    if not ref_keywords:
+        return 0.0
     
+    overlap = gen_keywords & ref_keywords
+    return len(overlap) / len(ref_keywords)
+
+
+def calculate_structure_score(generated: str, reference: str) -> float:
+    """计算结构相似度"""
+    score = 0.0
+    
+    # 检查是否是 JSON 格式
+    ref_is_json = reference.strip().startswith('{') or reference.strip().startswith('[')
+    gen_is_json = generated.strip().startswith('{') or generated.strip().startswith('[')
+    
+    if ref_is_json == gen_is_json:
+        score += 0.3
+    
+    # 检查长度相似度
+    ref_len = len(reference)
+    gen_len = len(generated)
+    len_ratio = min(ref_len, gen_len) / max(ref_len, gen_len) if max(ref_len, gen_len) > 0 else 0
+    score += 0.3 * len_ratio
+    
+    # 检查是否包含常见的 prompt 元素
+    prompt_elements = ['style', 'quality', 'lighting', 'detailed', 'realistic', 
+                       '8k', '4k', 'masterpiece', 'best quality', '--ar', '--v']
+    
+    ref_elements = sum(1 for e in prompt_elements if e.lower() in reference.lower())
+    gen_elements = sum(1 for e in prompt_elements if e.lower() in generated.lower())
+    
+    if ref_elements > 0:
+        element_ratio = min(gen_elements, ref_elements) / ref_elements
+        score += 0.4 * element_ratio
+    else:
+        score += 0.2  # 如果参考没有这些元素，给一个基础分
+    
+    return score
+
+
+def evaluate(model, tokenizer, val_data, num_samples=50):
+    """评估模型"""
     results = []
     
-    async with aiohttp.ClientSession() as session:
-        for i, test in enumerate(TEST_CASES, 1):
-            print(f"\n[Test {i}/{len(TEST_CASES)}]")
-            print(f"Input: {test['input']}")
-            
-            output = await generate_prompt(session, test['input'])
-            evaluation = evaluate_output(output, test['expected_elements'])
-            
-            print(f"Output length: {evaluation['length']} chars")
-            print(f"Found elements: {evaluation['found_elements']}")
-            print(f"Found pro terms: {evaluation['found_terms']}")
-            print(f"Is JSON: {evaluation['is_json']}")
-            print(f"Total score: {evaluation['total_score']:.2f}")
-            print(f"\nGenerated prompt preview:")
-            print("-" * 40)
-            print(output[:500] + ("..." if len(output) > 500 else ""))
-            
-            results.append({
-                "input": test['input'],
-                "output": output,
-                "evaluation": evaluation
-            })
+    # 随机采样
+    import random
+    samples = random.sample(val_data, min(num_samples, len(val_data)))
     
-    # 汇总结果
-    print("\n" + "=" * 60)
-    print("Summary")
-    print("=" * 60)
+    print(f"\nEvaluating on {len(samples)} samples...")
     
-    avg_score = sum(r['evaluation']['total_score'] for r in results) / len(results)
-    avg_length = sum(r['evaluation']['length'] for r in results) / len(results)
+    for sample in tqdm(samples):
+        instruction = sample['instruction']
+        reference = sample['output']
+        
+        generated = generate(model, tokenizer, instruction)
+        
+        # 计算分数
+        keyword_score = calculate_keyword_overlap(generated, reference)
+        structure_score = calculate_structure_score(generated, reference)
+        
+        results.append({
+            'instruction': instruction,
+            'reference': reference,
+            'generated': generated,
+            'keyword_score': keyword_score,
+            'structure_score': structure_score,
+        })
     
-    print(f"Average score: {avg_score:.2f}")
-    print(f"Average length: {avg_length:.0f} chars")
-    print(f"JSON outputs: {sum(1 for r in results if r['evaluation']['is_json'])}/{len(results)}")
+    return results
+
+
+def main():
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--base", action="store_true", help="评估基础模型")
+    parser.add_argument("--samples", "-n", type=int, default=30, help="评估样本数")
+    args = parser.parse_args()
     
-    # 保存详细结果
-    output_path = BASE_DIR / "data/processed/evaluation_results.json"
+    # 加载数据
+    print("Loading validation data...")
+    val_data = load_validation_data()
+    print(f"Total validation samples: {len(val_data)}")
+    
+    # 加载模型
+    try:
+        model, tokenizer = load_model(use_finetuned=not args.base)
+    except FileNotFoundError as e:
+        print(f"Error: {e}")
+        return
+    
+    # 评估
+    model_name = "Base Model" if args.base else "Finetuned Model"
+    print(f"\n{'=' * 60}")
+    print(f"Evaluating: {model_name}")
+    print(f"{'=' * 60}")
+    
+    results = evaluate(model, tokenizer, val_data, args.samples)
+    
+    # 统计结果
+    avg_keyword = sum(r['keyword_score'] for r in results) / len(results)
+    avg_structure = sum(r['structure_score'] for r in results) / len(results)
+    overall_score = (avg_keyword + avg_structure) / 2
+    
+    print(f"\n{'=' * 60}")
+    print("EVALUATION RESULTS")
+    print(f"{'=' * 60}")
+    print(f"Model: {model_name}")
+    print(f"Samples: {len(results)}")
+    print(f"Keyword Overlap Score: {avg_keyword:.2%}")
+    print(f"Structure Score: {avg_structure:.2%}")
+    print(f"Overall Score: {overall_score:.2%}")
+    
+    # 显示一些示例
+    print(f"\n{'=' * 60}")
+    print("SAMPLE OUTPUTS")
+    print(f"{'=' * 60}")
+    
+    for i, r in enumerate(results[:3]):
+        print(f"\n[Sample {i+1}]")
+        print(f"Input: {r['instruction']}")
+        print(f"Reference: {r['reference'][:150]}...")
+        print(f"Generated: {r['generated'][:150]}...")
+        print(f"Scores: keyword={r['keyword_score']:.2%}, structure={r['structure_score']:.2%}")
+    
+    # 保存结果
+    output_path = BASE_DIR / f"data/eval_results_{'base' if args.base else 'finetuned'}.json"
     with open(output_path, 'w', encoding='utf-8') as f:
-        json.dump(results, f, ensure_ascii=False, indent=2)
-    print(f"\nDetailed results saved to: {output_path}")
+        json.dump({
+            'model': model_name,
+            'avg_keyword_score': avg_keyword,
+            'avg_structure_score': avg_structure,
+            'overall_score': overall_score,
+            'results': results
+        }, f, ensure_ascii=False, indent=2)
+    
+    print(f"\nResults saved to: {output_path}")
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()

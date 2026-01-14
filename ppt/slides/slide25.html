@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+
+html { background: #181B24; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  font-family: Arial, sans-serif;
+  display: flex;
+  background-size: cover;
+  background-position: center;
+  box-sizing: border-box;
+}
+h1 { color: #FFFFFF; margin: 0; }
+h2 { color: #B165FB; margin: 0; }
+h3 { color: #FFFFFF; margin: 0; }
+p { color: #E0E0E0; margin: 0; line-height: 1.5; }
+ul, ol { color: #E0E0E0; margin: 0; padding-left: 18pt; }
+li { margin-bottom: 6pt; line-height: 1.4; }
+.highlight { color: #B165FB; }
+.accent { color: #40695B; }
+
+</style>
+</head>
+<body style="background-image: url('../images/bg-main.png');">
+
+      <div style="flex: 1; padding: 30pt;">
+        <h2 style="font-size: 24pt; margin-bottom: 18pt;">方案选择决策</h2>
+        <div style="display: flex; gap: 15pt;">
+          <div style="flex: 1;">
+            <div style="background: #1e2235; padding: 12pt; border-radius: 6pt; margin-bottom: 10pt;">
+              <h3 style="font-size: 12pt; color: #B165FB; margin-bottom: 6pt;">数据量大 + 预算充足?</h3>
+              <p style="font-size: 12pt;">→ <span class="highlight">SFT + LoRA</span></p>
+            </div>
+            <div style="background: #1e2235; padding: 12pt; border-radius: 6pt; margin-bottom: 10pt;">
+              <h3 style="font-size: 12pt; color: #40695B; margin-bottom: 6pt;">数据量小 + 快速上线?</h3>
+              <p style="font-size: 12pt;">→ <span class="highlight">RAG</span> + 指令微调</p>
+            </div>
+            <div style="background: #1e2235; padding: 12pt; border-radius: 6pt;">
+              <h3 style="font-size: 12pt; color: #B165FB; margin-bottom: 6pt;">显存受限?</h3>
+              <p style="font-size: 12pt;">→ <span class="highlight">QLoRA</span></p>
+            </div>
+          </div>
+          <div style="flex: 1;">
+            <div style="background: #1e2235; padding: 12pt; border-radius: 6pt; margin-bottom: 10pt;">
+              <h3 style="font-size: 12pt; color: #40695B; margin-bottom: 6pt;">知识需实时更新?</h3>
+              <p style="font-size: 12pt;">→ <span class="highlight">RAG</span></p>
+            </div>
+            <div style="background: #1e2235; padding: 12pt; border-radius: 6pt; margin-bottom: 10pt;">
+              <h3 style="font-size: 12pt; color: #B165FB; margin-bottom: 6pt;">需要高质量输出?</h3>
+              <p style="font-size: 12pt;">→ <span class="highlight">RLHF/DPO</span></p>
+            </div>
+            <div style="background: #1e2235; padding: 12pt; border-radius: 6pt;">
+              <h3 style="font-size: 12pt; color: #40695B; margin-bottom: 6pt;">多任务切换?</h3>
+              <p style="font-size: 12pt;">→ <span class="highlight">LoRA</span> 多适配器</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+</body>
+</html>

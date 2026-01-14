@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+
+html { background: #181B24; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  font-family: Arial, sans-serif;
+  display: flex;
+  background-size: cover;
+  background-position: center;
+  box-sizing: border-box;
+}
+h1 { color: #FFFFFF; margin: 0; }
+h2 { color: #B165FB; margin: 0; }
+h3 { color: #FFFFFF; margin: 0; }
+p { color: #E0E0E0; margin: 0; line-height: 1.5; }
+ul, ol { color: #E0E0E0; margin: 0; padding-left: 18pt; }
+li { margin-bottom: 6pt; line-height: 1.4; }
+.highlight { color: #B165FB; }
+.accent { color: #40695B; }
+
+</style>
+</head>
+<body style="background-image: url('../images/bg-main.png');">
+
+      <div style="flex: 1; padding: 30pt;">
+        <h2 style="font-size: 24pt; margin-bottom: 18pt;">RLHF 的挑战与方案</h2>
+        <div style="display: flex; gap: 20pt;">
+          <div style="flex: 1;">
+            <h3 style="font-size: 15pt; color: #B165FB; margin-bottom: 12pt;">挑战</h3>
+            <ul style="font-size: 12pt;">
+              <li>标注成本高昂</li>
+              <li>训练不稳定</li>
+              <li>奖励模型偏差</li>
+              <li>需要4个模型同时运行</li>
+            </ul>
+          </div>
+          <div style="flex: 1;">
+            <h3 style="font-size: 15pt; color: #40695B; margin-bottom: 12pt;">简化方案</h3>
+            <ul style="font-size: 12pt;">
+              <li><span class="highlight">DPO</span>: 直接偏好优化</li>
+              <li><span class="highlight">ORPO</span>: 无需参考模型</li>
+              <li><span class="highlight">SimPO</span>: 更简单的优化</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    
+</body>
+</html>
